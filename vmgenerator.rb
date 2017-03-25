@@ -20,6 +20,12 @@ wholemac = (1..6).collect { "%02x" % (rand 255) }.join(":")
 while vm_Name.empty? do 
   puts "Name for you new VM:"
   vm_Name = gets.chomp
+  while !Dir.glob(out_filename).empty? do
+    puts "#{vmname}.xml is already taken. Overwrite [n]?"
+    over_answer gets.chomp.downcase[0] 
+    if over_answer == 'y'
+      File.open(out_filename, file_contents)
+    end 
 end
 
 while !(vm_RamUnit =~ /G|K|M/) do
@@ -69,8 +75,11 @@ puts "mac:    #{wholemac}"
 puts "uuid:   #{uuid}"
 
 
-puts "
-<domain type='kvm'>
+out_filename = '#{vmname}.xml'
+
+
+
+file_contents = "<domain type='kvm'>
   <name>#{vm_Name}</name>
   <uuid>#{uuid}</uuid>
   <memory unit='#{vm_RamUnit}iB'>#{vm_Memory}</memory>
