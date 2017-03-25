@@ -18,20 +18,25 @@ uuid = `uuidgen`
 wholemac = (1..6).collect { "%02x" % (rand 255) }.join(":")
 
 while vm_Name.empty? do 
+  over_answer = ''
+  out_filename = ''
   puts "Name for you new VM:"
   vm_Name = gets.chomp
-  while !Dir.glob(out_filename).empty? do
-    puts "#{vmname}.xml is already taken. Overwrite [n]?"
-    over_answer gets.chomp.downcase[0] 
-    if over_answer == 'y'
-      File.open(out_filename, file_contents)
+  out_filename = "#{vm_Name}.xml"
+
+  if !Dir.glob(out_filename).empty? 
+    puts "#{vm_Name}.xml is already taken. Overwrite [n]?"
+    over_answer = gets.chomp.downcase[0] 
+    puts "over_answer: #{over_answer}"
+    if !over_answer == 'y'
+      vm_Name = ''
     end 
+  end
 end
 
 while !(vm_RamUnit =~ /G|K|M/) do
   puts "RAM unit (K/M/G) [G]:"
   vm_RamUnit = gets.chomp.upcase[0]
-  #pp "vm_RamUnit - #{vm_RamUnit.type}"
 
   vm_RamUnit = 'G' if vm_RamUnit.nil? || vm_RamUnit.empty?
 
@@ -66,18 +71,14 @@ while vm_Bridge.empty? do
   vm_Bridge = 'br0' if vm_Bridge.empty?
 end
 
-puts "name:   #{vm_Name}"
-puts "unit:   #{vm_RamUnit}"
-puts "memory: #{vm_Memory}"
-puts "cpus:   #{vm_Cpus}"
-puts "bridge: #{vm_Bridge}"
-puts "mac:    #{wholemac}"
-puts "uuid:   #{uuid}"
-
-
-out_filename = '#{vmname}.xml'
-
-
+puts "name:     #{vm_Name}"
+puts "unit:     #{vm_RamUnit}"
+puts "memory:   #{vm_Memory}"
+puts "cpus:     #{vm_Cpus}"
+puts "bridge:   #{vm_Bridge}"
+puts "mac:      #{wholemac}"
+puts "uuid:     #{uuid}"
+puts "filename: #{out_filename}"
 
 file_contents = "<domain type='kvm'>
   <name>#{vm_Name}</name>
@@ -144,3 +145,7 @@ file_contents = "<domain type='kvm'>
     </memballoon>
   </devices>
 </domain> "
+
+open(out_filename, 'w') { |f|
+  f.puts file_contents
+}
