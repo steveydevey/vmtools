@@ -1,22 +1,26 @@
 #!/usr/bin/env ruby
 
+# extend string class to add a numeric check
 class String
   def is_number?
       true if Float(self) rescue false
   end
 end
 
+# initialize things to have baseline empty vars
 vm_Name    = ''
 vm_RamUnit = ''
 vm_Memory  = ''
 vm_Bridge  = ''
 vm_Cpus    = ''
 
+# call out for uuid generation
 uuid = `uuidgen`
 
-#wholemac = `openssl rand -hex 6 | sed 's/\(..\)/\1\:/g; s/.$//'`
+# create a random mac from hex digits, then split with colons
 wholemac = (1..6).collect { "%02x" % (rand 255) }.join(":")
 
+# loop to let this question happen multiple times, if answers make no sense
 while vm_Name.empty? do 
   over_answer = ''
   out_filename = ''
@@ -24,17 +28,17 @@ while vm_Name.empty? do
   vm_Name = gets.chomp
   out_filename = "#{vm_Name}.xml"
 
+  # checking for the existence of filenames that match the chosen name
   if !Dir.glob(out_filename).empty? 
     puts "#{vm_Name}.xml is already taken. Overwrite [n]?"
     over_answer = gets.chomp.downcase[0] 
-    puts "over_answer: #{over_answer}"
+    #puts "over_answer: #{over_answer}"
     if !(over_answer == 'y')
-	    puts 'fuck you'
       vm_Name = '' 
     end
-    puts "over_answer 2nd: #{over_answer}"
+    #puts "over_answer 2nd: #{over_answer}"
   end
-    puts "name: #{vm_Name}"
+    #puts "name: #{vm_Name}"
 end
 
 while !(vm_RamUnit =~ /G|K|M/) do
