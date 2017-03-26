@@ -28,10 +28,13 @@ while vm_Name.empty? do
     puts "#{vm_Name}.xml is already taken. Overwrite [n]?"
     over_answer = gets.chomp.downcase[0] 
     puts "over_answer: #{over_answer}"
-    if !over_answer == 'y'
-      vm_Name = ''
-    end 
+    if !(over_answer == 'y')
+	    puts 'fuck you'
+      vm_Name = '' 
+    end
+    puts "over_answer 2nd: #{over_answer}"
   end
+    puts "name: #{vm_Name}"
 end
 
 while !(vm_RamUnit =~ /G|K|M/) do
