@@ -21,9 +21,11 @@ class Vm
     @status=status
     if status == 'running'
       vncport = getVnc()
-      nics = getNics(@name)
+      @nics = getNics(@name)
+      $out_data += [[ @id, @name, @status, @nics]]
+    else
+      $out_data += [[ @id, @name, @status]]
     end
-    $out_data += [[ @id, @name, @status]]
   end
 
 end
@@ -37,6 +39,7 @@ virshlist.shift
 vmList    = virshlist
 $out_data  = []
 
+# start the data gathering
 vmList.each { |dom| 
   dom_info = dom.split
   dom_id =   dom_info[0]
@@ -45,8 +48,10 @@ vmList.each { |dom|
   Vm.new(dom_name, dom_id, dom_stat) 
 }
 
-#print "#{$out_data} - \n"
-
+# spit out what we've found
+print "test data:\n"
+print $out_data
+print "\n-------------------\n"
 $out_data.each { |vm| 
   print vm.join(" - ") + "\n"
 }
