@@ -49,6 +49,7 @@ vmList.each { |dom|
 }
 
 # spit out what we've found
+print "test data:\n"
 print $out_data
 print "\n-------------------\n"
 $out_data.each { |vm| 
