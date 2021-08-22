@@ -1,2 +1,4 @@
-* docker image prune -a
-  https://docs.docker.com/engine/reference/commandline/image_prune/
+* docker
+** prune unused docker images
+   docker image prune -a
+   https://docs.docker.com/engine/reference/commandline/image_prune/
